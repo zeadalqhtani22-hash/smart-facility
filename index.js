@@ -461,9 +461,7 @@ app.get("/dashboard", (req, res) => {
         <p>12</p>
         <span>Current visitors</span>
       </div>
-      <div class="stat-card">
-  <h3>👥 Queue</h3>
-  ...
+      
 </div>
 
 <div class="stat-card" style="
