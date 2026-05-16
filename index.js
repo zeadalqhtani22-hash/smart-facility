@@ -397,7 +397,9 @@ app.get("/dashboard", (req, res) => {
   </div>
   <div style="background:white;color:#111;border-radius:18px;padding:25px;margin-top:25px;">
   <h2>📊 Energy Analytics</h2>
-  <canvas id="energyChart" style="height:300px;"></canvas>
+  <div style="height:350px; width:100%; max-width:900px; margin:auto;">
+    <canvas id="energyChart"></canvas>
+</div>
 </div>
   <div id="lowStockAlert"></div>
   <script>
@@ -444,7 +446,8 @@ if (energyCanvas) {
       }]
     },
     options: {
-      responsive: true
+      responsive: true,
+maintainAspectRatio: false
     }
   });
 }
