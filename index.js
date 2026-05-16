@@ -460,7 +460,15 @@ app.get("/dashboard", (req, res) => {
   </div>
   <div style="background:white;color:#111;border-radius:18px;padding:25px;margin-top:45px;">
   <h2>📊 Energy Analytics</h2>
-  <div style="height:350px; width:100%; max-width:900px; margin:auto;">
+  <div style="
+height:320px;
+width:100%;
+max-width:850px;
+margin:35px auto 10px auto;
+padding:20px;
+background:#f8fafc;
+border-radius:18px;
+">
     <canvas id="energyChart"></canvas>
 </div>
 </div>
@@ -505,6 +513,12 @@ if (energyCanvas) {
         label: "Energy Consumption kW",
         data: [1.2, 2.1, 3.8, 4.5, 3.2, 2.4],
         borderWidth: 3,
+        borderColor: "#1e293b",
+backgroundColor: "rgba(30,41,59,0.12)",
+pointBackgroundColor: "#0f172a",
+pointBorderColor: "#0f172a",
+pointRadius: 5,
+fill: true,
         tension: 0.4
       }]
     },
