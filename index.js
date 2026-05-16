@@ -229,8 +229,8 @@ new Chart(ctx, {
         datasets: [{
             label: 'Energy Consumption',
             data: [12, 19, 9, 15, 22, 17],
-            borderColor: '#00d4ff',
-            backgroundColor: 'rgba(0,212,255,0.2)',
+            borderColor: "#0f172a",
+           backgroundColor: "rgba(15,23,42,0.15)",
             borderWidth: 3,
             tension: 0.4,
             fill: true
@@ -395,7 +395,7 @@ app.get("/dashboard", (req, res) => {
     <p>Smart Integrated Facility Management System</p>
     
   </div>
-  <div style="background:white;color:#111;border-radius:18px;padding:25px;margin-top:25px;">
+  <div style="background:white;color:#111;border-radius:18px;padding:25px;margin-top:45px;">
   <h2>📊 Energy Analytics</h2>
   <div style="height:350px; width:100%; max-width:900px; margin:auto;">
     <canvas id="energyChart"></canvas>
