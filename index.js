@@ -207,6 +207,37 @@ button:hover{
 .orange{color:#f59e0b}
 .red{color:#ef4444}
 .blue{color:#60a5fa}
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+  margin:30px 0;
+}
+
+.stat-card{
+  background:linear-gradient(135deg,#0f172a,#1e3a8a);
+  color:white;
+  padding:22px;
+  border-radius:18px;
+  box-shadow:0 10px 25px rgba(0,0,0,.25);
+}
+
+.stat-card h3{
+  margin:0;
+  color:#dbeafe;
+  font-size:16px;
+}
+
+.stat-card p{
+  font-size:32px;
+  font-weight:bold;
+  margin:12px 0 5px;
+}
+
+.stat-card span{
+  color:#93c5fd;
+  font-size:13px;
+}
 
 </style>
 </head>
@@ -392,7 +423,39 @@ app.get("/dashboard", (req, res) => {
 
   <div class="hero">
     <h1>Welcome ${user.facility}</h1>
+
     <p>Smart Integrated Facility Management System</p>
+
+    <div class="stats-grid">
+
+      <div class="stat-card">
+        <h3>⚡ Energy Usage</h3>
+        <p>4.5 kW</p>
+        <span>Current facility consumption</span>
+      </div>
+
+      <div class="stat-card">
+        <h3>🌡 Temperature</h3>
+        <p>24°C</p>
+        <span>Average environment temp</span>
+      </div>
+
+      <div class="stat-card">
+        <h3>📦 Inventory</h3>
+        <p>71</p>
+        <span>Total available items</span>
+      </div>
+
+      <div class="stat-card">
+        <h3>👥 Queue</h3>
+        <p>12</p>
+        <span>Current visitors</span>
+      </div>
+
+    </div>
+
+</div>
+
     
   </div>
   <div style="background:white;color:#111;border-radius:18px;padding:25px;margin-top:45px;">
