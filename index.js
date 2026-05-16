@@ -207,6 +207,16 @@ button:hover{
 .orange{color:#f59e0b}
 .red{color:#ef4444}
 .blue{color:#60a5fa}
+.card,
+.stat-card{
+  transition:0.3s ease;
+}
+
+.card:hover,
+.stat-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 16px 35px rgba(0,0,0,.30);
+}
 .stats-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
