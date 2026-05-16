@@ -26,7 +26,7 @@ function pageLayout(content) {
 <html>
 <head>
 <title>SIFMS</title>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 body{
   margin:0;
@@ -212,7 +212,37 @@ button:hover{
 </head>
 
 <body>
+
+<div style="width:90%;margin:auto;padding-top:40px;">
+
+
+</div>
 ${content}
+<script>
+
+const ctx = document.getElementById('energyChart');
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['8AM', '10AM', '12PM', '2PM', '4PM', '6PM'],
+        datasets: [{
+            label: 'Energy Consumption',
+            data: [12, 19, 9, 15, 22, 17],
+            borderColor: '#00d4ff',
+            backgroundColor: 'rgba(0,212,255,0.2)',
+            borderWidth: 3,
+            tension: 0.4,
+            fill: true
+        }]
+    },
+
+    options: {
+        responsive: true
+    }
+});
+
+</script>
 </body>
 </html>
 `;
@@ -363,7 +393,12 @@ app.get("/dashboard", (req, res) => {
   <div class="hero">
     <h1>Welcome ${user.facility}</h1>
     <p>Smart Integrated Facility Management System</p>
+    
   </div>
+  <div style="background:white;color:#111;border-radius:18px;padding:25px;margin-top:25px;">
+  <h2>📊 Energy Analytics</h2>
+  <canvas id="energyChart" style="height:300px;"></canvas>
+</div>
   <div id="lowStockAlert"></div>
   <script>
 async function checkLowStock() {
@@ -394,6 +429,25 @@ async function checkLowStock() {
 setInterval(checkLowStock, 1000);
 
 checkLowStock();
+const energyCanvas = document.getElementById("energyChart");
+
+if (energyCanvas) {
+  new Chart(energyCanvas, {
+    type: "line",
+    data: {
+      labels: ["8AM", "10AM", "12PM", "2PM", "4PM", "6PM"],
+      datasets: [{
+        label: "Energy Consumption kW",
+        data: [1.2, 2.1, 3.8, 4.5, 3.2, 2.4],
+        borderWidth: 3,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true
+    }
+  });
+}
 </script>
   <div class="cards">
 
