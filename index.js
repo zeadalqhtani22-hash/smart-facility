@@ -482,6 +482,29 @@ border-radius:18px;
     <canvas id="energyChart"></canvas>
 </div>
 </div>
+<div class="card" style="margin:30px 0;">
+  <h2>📝 Activity Logs</h2>
+
+  <div class="info">
+    <span>09:10 AM</span>
+    <strong>Plug 1 turned ON</strong>
+  </div>
+
+  <div class="info">
+    <span>09:18 AM</span>
+    <strong>Milk shelf updated</strong>
+  </div>
+
+  <div class="info">
+    <span>09:25 AM</span>
+    <strong>Temperature status checked</strong>
+  </div>
+
+  <div class="info">
+    <span>09:30 AM</span>
+    <strong>Inventory monitoring active</strong>
+  </div>
+</div>
   <div id="lowStockAlert"></div>
   <script>
 async function checkLowStock() {
