@@ -460,8 +460,7 @@ app.get("/dashboard", (req, res) => {
         <h3>👥 Queue</h3>
         <p>12</p>
         <span>Current visitors</span>
-      </div>
-      
+      </div> 
 </div>
 
 <div class="stat-card" style="
