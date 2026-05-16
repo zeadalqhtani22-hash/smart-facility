@@ -461,6 +461,23 @@ app.get("/dashboard", (req, res) => {
         <p>12</p>
         <span>Current visitors</span>
       </div>
+      <div class="stat-card">
+  <h3>👥 Queue</h3>
+  ...
+</div>
+
+<div class="stat-card" style="
+background:linear-gradient(135deg,#3f1d0d,#7c2d12);
+border:1px solid rgba(255,255,255,.08);
+">
+
+  <h3>💰 Expected Power Cost</h3>
+
+  <p>≈ 2.3K SAR</p>
+
+  <span>Estimated monthly electricity expense</span>
+
+</div>
 
     </div>
 
