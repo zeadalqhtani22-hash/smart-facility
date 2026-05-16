@@ -1040,8 +1040,10 @@ ht3.hum + " %";
 document.getElementById("ht3Status").innerText =
 ht3.tC > 30 ? "🔥 HOT" : "✅ GOOD";
 
-  document.getElementById("plug1Status").innerText =
-    plug1.output ? "ON" : "OFF";
+  document.getElementById("plug1Status").innerHTML =
+  plug1.output
+    ? '<span style="color:#22c55e;font-weight:bold;">● ON</span>'
+    : '<span style="color:#ef4444;font-weight:bold;">● OFF</span>';
 
   document.getElementById("plug1Power").innerText =
     plug1.apower + " W";
@@ -1054,8 +1056,10 @@ ht3.tC > 30 ? "🔥 HOT" : "✅ GOOD";
 
 
 
-  document.getElementById("plug2Status").innerText =
-    plug2.output ? "ON" : "OFF";
+  document.getElementById("plug2Status").innerHTML =
+  plug2.output
+    ? '<span style="color:#22c55e;font-weight:bold;">● ON</span>'
+    : '<span style="color:#ef4444;font-weight:bold;">● OFF</span>';
 
   document.getElementById("plug2Power").innerText =
     plug2.apower + " W";
@@ -1068,8 +1072,10 @@ ht3.tC > 30 ? "🔥 HOT" : "✅ GOOD";
 
 
 
-  document.getElementById("plug3Status").innerText =
-  plug3.output ? "ON" : "OFF";
+  document.getElementById("plug3Status").innerHTML =
+  plug3.output
+    ? '<span style="color:#22c55e;font-weight:bold;">● ON</span>'
+    : '<span style="color:#ef4444;font-weight:bold;">● OFF</span>';
 
 document.getElementById("plug3Power").innerText =
   ((plug3.apower !== undefined ? plug3.apower : 0)) + " W";
