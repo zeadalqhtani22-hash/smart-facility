@@ -1565,12 +1565,12 @@ app.get("/toggle-plug/:plug/:state", async (req, res) => {
   try {
 
     const plug = req.params.plug;
-    const state = req.params.state;
+    const state = req.params.state === "true";
 
     const ip = shellyDevices[plug];
 
     await axios.get(
-      "http://" + ip + "/rpc/Switch.Set?id=0&on=" + state
+      "http://" + ip + "/rpc/Switch.Set?id=0&on=" + (state ? "true" : "false")
     );
 
     res.json({
