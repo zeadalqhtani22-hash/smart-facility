@@ -1357,7 +1357,6 @@ app.get("/energy", async (req, res) => {
 </script>
   `));
 });
-
 app.get("/inventory", (req, res) => {
   const user = getCurrentUser(req);
 
@@ -1383,42 +1382,203 @@ app.get("/inventory", (req, res) => {
     <p>Live shelf monitoring connected with ESP32 Ultrasonic Sensors.</p>
   </div>
 
+  <div id="alertBox"
+       class="card"
+       style="display:none;background:#7f1d1d;color:white;margin-bottom:20px;">
+
+    <h2>⚠️ Low Stock Alert</h2>
+
+    <p id="alertText"></p>
+  </div>
+
   <div class="grid">
+
     <div class="card">
       <h3>🥛 Shelf 1 - Milk</h3>
+
       <p>Status:</p>
-      <div class="value blue">Available</div>
+      <div id="s1" class="value blue">Available</div>
+
       <p>Stock:</p>
-      <div class="value green">6</div>
+      <div id="stock1" class="value green">6</div>
+
+      <button onclick="resetShelf('shelf1')">
+        Reset Shelf 1
+      </button>
     </div>
 
     <div class="card">
       <h3>💧 Shelf 2 - Water</h3>
+
       <p>Status:</p>
-      <div class="value blue">Available</div>
+      <div id="s2" class="value blue">Available</div>
+
       <p>Stock:</p>
-      <div class="value green">40</div>
+      <div id="stock2" class="value green">40</div>
+
+      <button onclick="resetShelf('shelf2')">
+        Reset Shelf 2
+      </button>
     </div>
 
     <div class="card">
       <h3>☕ Shelf 3 - Coffee</h3>
+
       <p>Status:</p>
-      <div class="value blue">Available</div>
+      <div id="s3" class="value blue">Available</div>
+
       <p>Stock:</p>
-      <div class="value green">15</div>
+      <div id="stock3" class="value green">15</div>
+
+      <button onclick="resetShelf('shelf3')">
+        Reset Shelf 3
+      </button>
     </div>
 
     <div class="card">
       <h3>🍰 Shelf 4 - Desserts</h3>
+
       <p>Status:</p>
-      <div class="value blue">Available</div>
+      <div id="s4" class="value blue">Available</div>
+
       <p>Stock:</p>
-      <div class="value green">10</div>
+      <div id="stock4" class="value green">10</div>
+
+      <button onclick="resetShelf('shelf4')">
+        Reset Shelf 4
+      </button>
     </div>
+
   </div>
 </div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getDatabase,
+  ref,
+  onValue,
+  update
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBsFkOhhBsUc2WXI1EPl4-gm2ZK9zNIaTI",
+  authDomain: "sifms-1498f.firebaseapp.com",
+  databaseURL: "https://sifms-1498f-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "sifms-1498f",
+  storageBucket: "sifms-1498f.firebasestorage.app",
+  messagingSenderId: "718646069018",
+  appId: "1:718646069018:web:09854daf0a59481dbe4ea3"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase(app);
+
+const inventoryRef = ref(db, "inventory");
+
+onValue(inventoryRef, (snapshot) => {
+
+  const data = snapshot.val();
+
+  if (!data) return;
+
+  updateShelf("1", data.shelf1);
+  updateShelf("2", data.shelf2);
+  updateShelf("3", data.shelf3);
+  updateShelf("4", data.shelf4);
+
+  checkLowStock(data);
+
+});
+
+function updateShelf(num, shelf) {
+
+  if (!shelf) return;
+
+  document.getElementById("s" + num).innerText =
+    shelf.status ?? "N/A";
+
+  document.getElementById("stock" + num).innerText =
+    shelf.stock ?? "N/A";
+
+  const stockBox =
+    document.getElementById("stock" + num);
+
+  if (shelf.stock <= 1) {
+    stockBox.className = "value red";
+  }
+  else if (shelf.stock <= 3) {
+    stockBox.className = "value orange";
+  }
+  else {
+    stockBox.className = "value green";
+  }
+
+}
+
+function checkLowStock(data) {
+
+  let alerts = [];
+
+  if (data.shelf1 && data.shelf1.stock <= 1)
+    alerts.push("Shelf 1 Milk stock is below 10%");
+
+  if (data.shelf2 && data.shelf2.stock <= 1)
+    alerts.push("Shelf 2 Water stock is below 10%");
+
+  if (data.shelf3 && data.shelf3.stock <= 1)
+    alerts.push("Shelf 3 Coffee stock is below 10%");
+
+  if (data.shelf4 && data.shelf4.stock <= 1)
+    alerts.push("Shelf 4 Desserts stock is below 10%");
+
+  const alertBox =
+    document.getElementById("alertBox");
+
+  const alertText =
+    document.getElementById("alertText");
+
+  if (alerts.length > 0) {
+
+    alertBox.style.display = "block";
+
+    alertText.innerHTML =
+      alerts.join("<br>");
+
+  } else {
+
+    alertBox.style.display = "none";
+
+  }
+
+}
+
+window.resetShelf = function(shelfName) {
+
+  let amount = 0;
+
+  if (shelfName === "shelf1") amount = 6;
+  if (shelfName === "shelf2") amount = 40;
+  if (shelfName === "shelf3") amount = 15;
+  if (shelfName === "shelf4") amount = 10;
+
+  update(ref(db, "inventory/" + shelfName), {
+    stock: amount,
+    status: "Available",
+    reset: true
+  });
+
+}
+
+</script>
   `));
 });
+
 app.get("/queuing", async (req, res) => {
  const user = await getCurrentUser(req);
   if (!user) {
