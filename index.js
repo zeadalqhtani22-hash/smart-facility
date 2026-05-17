@@ -1567,14 +1567,16 @@ app.get("/toggle-plug/:plug/:state", async (req, res) => {
     const plug = req.params.plug;
     const state = req.params.state === "true";
 
-    const ip = shellyDevices[plug];
-
-    await axios.get(
-      "http://" + ip + "/rpc/Switch.Set?id=0&on=" + (state ? "true" : "false")
-    );
+    await set(ref(db, "commands/" + plug), {
+      state: state,
+      pending: true,
+      source: "web-dashboard",
+      updatedAt: new Date().toLocaleString()
+    });
 
     res.json({
-      success: true
+      success: true,
+      message: "Command sent to Firebase"
     });
 
   } catch (error) {
