@@ -439,7 +439,13 @@ app.post("/login", async (req, res) => {
   }
 
 });
+function getCurrentUser(req) {
 
+  return users.find(
+    user => user.email === req.session.email
+  );
+
+}
 app.get("/dashboard", async (req, res) => {
   const user = await getCurrentUser(req);
 
