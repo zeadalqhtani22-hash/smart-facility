@@ -3,7 +3,7 @@ const express = require("express");
 const session = require("express-session");
 
 const db = require("./firebase");
-const { ref, set } = require("firebase/database");
+const { ref, set, get, child } = require("firebase/database");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const SHELLY_IP = "192.168.8.100";
@@ -383,34 +383,65 @@ res.redirect("/");
   res.redirect("/");
 });
 
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
+
   const { email, password } = req.body;
 
-  const user = users.find(
-    user => user.email === email && user.password === password
-  );
+  try {
 
-  if (!user) {
-    return res.send(pageLayout(`
+    const snapshot = await get(
+      child(
+        ref(db),
+        "users/" + email.replace(/\./g, "_")
+      )
+    );
+
+    if (!snapshot.exists()) {
+
+      return res.send(pageLayout(`
 <div class="auth-page">
   <div class="auth-box">
-    <h2>Wrong Email or Password</h2>
-    <div class="small-link"><a href="/">Try Again</a></div>
+    <h2>User Not Found</h2>
+    <div class="small-link">
+      <a href="/">Try Again</a>
+    </div>
   </div>
 </div>
-    `));
+      `));
+
+    }
+
+    const user = snapshot.val();
+
+    if (user.password !== password) {
+
+      return res.send(pageLayout(`
+<div class="auth-page">
+  <div class="auth-box">
+    <h2>Wrong Password</h2>
+    <div class="small-link">
+      <a href="/">Try Again</a>
+    </div>
+  </div>
+</div>
+      `));
+
+    }
+
+    req.session.email = user.email;
+
+    res.redirect("/dashboard");
+
+  } catch (error) {
+
+    res.send("Login Error");
+
   }
 
-  req.session.email = user.email;
-  res.redirect("/dashboard");
 });
 
-function getCurrentUser(req) {
-  return users.find(user => user.email === req.session.email);
-}
-
-app.get("/dashboard", (req, res) => {
-  const user = getCurrentUser(req);
+app.get("/dashboard", async (req, res) => {
+  const user = await getCurrentUser(req);
 
   if (!user) {
     return res.redirect("/");
@@ -638,8 +669,8 @@ maintainAspectRatio: false
   `));
 });
 
-app.get("/energy", (req, res) => {
-  const user = getCurrentUser(req);
+app.get("/energy", async (req, res) => {
+  const user = await getCurrentUser(req);
 
   if (!user) {
     return res.redirect("/");
@@ -1140,8 +1171,8 @@ setInterval(loadShellyData, 3000);
   `));
 });
 
-app.get("/inventory", (req, res) => {
-  const user = getCurrentUser(req);
+app.get("/energy", async (req, res) => {
+ const user = await getCurrentUser(req);
 
   if (!user) {
     return res.redirect("/");
@@ -1322,9 +1353,8 @@ app.get("/inventory", (req, res) => {
 });
 
 
-app.get("/queuing", (req, res) => {
-  const user = getCurrentUser(req);
-
+app.get("/queuing", async (req, res) => {
+ const user = await getCurrentUser(req);
   if (!user) {
     return res.redirect("/");
   }
