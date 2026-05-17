@@ -1358,7 +1358,67 @@ app.get("/energy", async (req, res) => {
   `));
 });
 
+app.get("/inventory", (req, res) => {
+  const user = getCurrentUser(req);
 
+  if (!user) {
+    return res.redirect("/");
+  }
+
+  res.send(pageLayout(`
+<div class="nav">
+  <div class="nav-title">📦 Inventory Monitoring</div>
+
+  <div class="nav-links">
+    <a href="/dashboard">🏠 Home</a>
+    <a href="/energy">⚡ Energy</a>
+    <a href="/queuing">👥 Queuing</a>
+    <a class="logout" href="/logout">Logout</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="hero">
+    <h1>📦 Smart Inventory System</h1>
+    <p>Live shelf monitoring connected with ESP32 Ultrasonic Sensors.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>🥛 Shelf 1 - Milk</h3>
+      <p>Status:</p>
+      <div class="value blue">Available</div>
+      <p>Stock:</p>
+      <div class="value green">6</div>
+    </div>
+
+    <div class="card">
+      <h3>💧 Shelf 2 - Water</h3>
+      <p>Status:</p>
+      <div class="value blue">Available</div>
+      <p>Stock:</p>
+      <div class="value green">40</div>
+    </div>
+
+    <div class="card">
+      <h3>☕ Shelf 3 - Coffee</h3>
+      <p>Status:</p>
+      <div class="value blue">Available</div>
+      <p>Stock:</p>
+      <div class="value green">15</div>
+    </div>
+
+    <div class="card">
+      <h3>🍰 Shelf 4 - Desserts</h3>
+      <p>Status:</p>
+      <div class="value blue">Available</div>
+      <p>Stock:</p>
+      <div class="value green">10</div>
+    </div>
+  </div>
+</div>
+  `));
+});
 app.get("/queuing", async (req, res) => {
  const user = await getCurrentUser(req);
   if (!user) {
